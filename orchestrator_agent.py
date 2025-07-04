@@ -24,16 +24,11 @@ class OrchestratorAgent:
         """
         self.model = model or get_configured_model()
         self.user_id = user_id
-        self.orchestrator = self._create_orchestrator_agent()
-        self._print_initialization_info()
+        self.orchestrator = self._create_orchestrator_agent() 
 
     def _create_orchestrator_agent(self) -> Agent:
         pass
-
-    def _print_initialization_info(self):
-        """Print initialization information"""
-        print(f"Orchestrator Agent initialized (User: {self.user_id})")
-        print(f"Model: {type(self.model).__name__}")
+ 
 
     def _assess_clarity(self, user_input: str) -> str:
         """
