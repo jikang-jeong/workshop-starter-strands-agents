@@ -1,10 +1,12 @@
 """MCP Tools - Strands Agents Workshop"""
-import json
 import httpx
 import wikipedia
-from typing import Dict, Any, Optional
+import asyncio
+import json
+from typing import Dict, Any
+from strands import tool
 
-
+@tool
 def wikipedia_search(query: str) -> Dict[str, Any]:
     """
     Search for information on Wikipedia.
@@ -19,7 +21,7 @@ def wikipedia_search(query: str) -> Dict[str, Any]:
     # Hint: Use wikipedia.set_lang(), wikipedia.page()
     pass
 
-
+@tool
 def duckduckgo_search(query: str) -> Dict[str, Any]:
     """
     Search for real-time information on DuckDuckGo.
@@ -35,7 +37,7 @@ def duckduckgo_search(query: str) -> Dict[str, Any]:
     # URL: https://api.duckduckgo.com/
     pass
 
-
+@tool
 def get_position(location: str) -> Dict[str, Any]:
     """
     Convert location name to latitude/longitude coordinates.
@@ -51,6 +53,10 @@ def get_position(location: str) -> Dict[str, Any]:
     # URL: https://nominatim.openstreetmap.org/search
     pass
  
+
+@tool
+def get_weather_forecast(latitude: float, longitude: float) -> Dict[str, Any]:
+    pass
 
 # Test code
 if __name__ == "__main__":
