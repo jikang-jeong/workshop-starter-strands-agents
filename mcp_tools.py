@@ -53,10 +53,7 @@ def get_position(location: str) -> Dict[str, Any]:
     # URL: https://nominatim.openstreetmap.org/search
     pass
  
-
-@tool
-def get_weather_forecast(latitude: float, longitude: float) -> Dict[str, Any]:
-    pass
+ 
 
 # Test code
 if __name__ == "__main__":
