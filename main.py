@@ -54,20 +54,7 @@ class StrandsAgentsWorkshopApp:
         """
         # TODO: Implement in Lab 5
         pass
-
-    def run_single_query(self, query: str) -> Dict[str, Any]:
-        """
-        Execute single query
-        
-        Args:
-            query: Query to execute
-            
-        Returns:
-            Execution result
-        """
-        # TODO: Implement in Lab 5
-        pass
-
+ 
     def run_interactive_mode(self):
         """
         Execute interactive mode
@@ -85,9 +72,8 @@ def main():
     """Main execution function"""
     # TODO: Implement in Lab 5
     # Hint:
-    # 1. Handle command line arguments
-    # 2. Branch between single query vs interactive mode
-    # 3. Execute application
+    # 1. Handle command line arguments 
+    # 2. Execute application
     print("💡 Implement in Lab 5!")
     print("🎯 Goal: Support single query mode and interactive mode")
 
