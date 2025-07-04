@@ -1,175 +1,171 @@
-"""Sub Agents - Agents as Tools 패턴을 위한 하위 에이전트들"""
+"""Sub Agents - Strands Agents Workshop"""
 from strands import Agent, tool
 from strands_tools import http_request
 from mcp_tools import get_position, wikipedia_search, duckduckgo_search
 from model_config import get_configured_model
 from typing import Dict, Any
-
-
-# Search Agent - 지능적 검색 도구 선택
 SEARCH_AGENT_PROMPT = """
-당신은 지능적 검색 전문 에이전트입니다.
-사용자의 검색 요청을 분석하여 가장 적합한 검색 도구를 선택하고 사용합니다.
+You are an intelligent search specialist agent.
+Analyze user search requests and select the most appropriate search tool to use.
 
-🔍 검색 도구 선택 전략:
+ Search Tool Selection Strategy:
 
-1. **WIKIPEDIA 우선 사용 케이스:**
-   - 역사적 사실, 인물, 지역, 국가 정보
-   - 과학적 개념, 학술적 내용
-   - 잘 정립된 주제의 포괄적 설명
-   - 예: "아인슈타인", "프랑스", "양자역학", "르네상스"
+1. **WIKIPEDIA Priority Use Cases:**
+   - Historical facts, people, regions, country information
+   - Scientific concepts, academic content
+   - Comprehensive explanations of well-established topics
+   - Examples: "Einstein", "France", "quantum mechanics", "Renaissance"
 
-2. **DUCKDUCKGO 우선 사용 케이스:**
-   - 기술 용어 정의, 프로그래밍 개념
-   - 최신 트렌드, 현대적 주제
-   - 간단한 정의나 설명이 필요한 경우
-   - 예: "API란", "머신러닝 정의", "React 프레임워크"
+2. **DUCKDUCKGO Priority Use Cases:**
+   - Technical term definitions, programming concepts
+   - Latest trends, modern topics
+   - Cases requiring simple definitions or explanations
+   - Examples: "What is API", "machine learning definition", "React framework"
 
-3. **선택 원칙:**
-   - 먼저 하나의 도구만 사용하여 검색
-   - 결과가 불충분하거나 실패한 경우에만 다른 도구 추가 사용
-   - 두 도구 모두 사용하는 것은 최후의 수단
+3. **Selection Principles:**
+   - First use only one tool for searching
+   - Use additional tools only if results are insufficient or failed
+   - Using both tools should be a last resort
 
-4. **결과 평가:**
-   - 검색 결과의 품질과 완성도를 평가
-   - 사용자 질문에 충분히 답변할 수 있는지 판단
-   - 필요시에만 보완 검색 실행
-
-검색 후 결과를 분석하여 사용자가 이해하기 쉽게 요약하고, 어떤 검색 도구를 사용했는지 명시하세요.
+After searching, analyze the results to summarize them in an easy-to-understand way for users, and specify which search tool was used.
 """
 
 @tool
 def search_agent(query: str) -> str:
     """
-    지능적 검색 도구 선택을 통한 최적화된 정보 검색 에이전트
-    
+    Optimized information search agent through intelligent search tool selection
+
     Args:
-        query: 검색할 내용
-        
+        query: Content to search for
+
     Returns:
-        선택된 검색 도구를 통한 최적화된 답변
+        Optimized answer through selected search tool
     """
     try:
+        model = get_configured_model()
         agent = Agent(
-            model=get_configured_model(),
+            model=model,
             system_prompt=SEARCH_AGENT_PROMPT,
             tools=[wikipedia_search, duckduckgo_search]
         )
         
-        search_prompt = f"""
-        사용자 검색 요청: "{query}"
-        
-        다음 단계를 따라 검색을 수행하세요:
-        
-        1. **요청 분석**: 이 검색 요청의 성격을 파악하세요
-           - 역사적/학술적 내용인가?
-           - 기술적 정의나 현대적 주제인가?
-           - 포괄적 설명이 필요한가, 간단한 정의면 충분한가?
-        
-        2. **도구 선택**: 분석 결과에 따라 가장 적합한 도구 하나를 선택하세요
-           - Wikipedia: 포괄적이고 권위있는 정보가 필요한 경우
-           - DuckDuckGo: 빠른 정의나 현대적 주제인 경우
-        
-        3. **검색 실행**: 선택한 도구로 검색을 수행하세요
-        
-        4. **결과 평가**: 검색 결과가 사용자 질문에 충분히 답변하는지 평가하세요
-           - 충분하다면: 결과를 정리하여 답변
-           - 불충분하다면: 다른 도구로 보완 검색 수행
-        
-        5. **최종 답변**: 
-           - 검색 결과를 사용자 친화적으로 요약
-           - 사용한 검색 도구 명시 (예: "Wikipedia에 따르면...", "DuckDuckGo 검색 결과...")
-           - 필요시 두 도구의 결과를 종합
-        
-        중요: 처음부터 두 도구를 모두 사용하지 마세요. 하나씩 순차적으로 사용하세요.
-        """
-        
-        response = agent(search_prompt)
+        response = agent(f"다음 검색 요청을 처리해주세요: {query}")
         return str(response)
         
     except Exception as e:
-        return f"검색 중 오류가 발생했습니다: {str(e)}"
+        return f"검색 에이전트 오류: {str(e)}"
+# Weather Agent - 위치 기반 날씨 정보
+WEATHER_AGENT_PROMPT = """You are a weather assistant with HTTP capabilities. You can:
 
+1. Make HTTP requests to the National Weather Service API
+2. Process and display weather forecast data
+3. Provide weather information for locations in the United States
 
-# Weather Agent - 날씨 정보 전문
-WEATHER_AGENT_PROMPT = """
-당신은 날씨 정보 전문 에이전트입니다.
-사용자가 특정 지역의 날씨를 요청하면, 먼저 해당 지역의 좌표를 찾고
-National Weather Service API를 사용하여 날씨 정보를 제공합니다.
-미국 지역만 지원됩니다.
+When retrieving weather information:
+1. First get the coordinates using get_position tool if needed
+2. Then get the grid information using https://api.weather.gov/points/{latitude},{longitude}
+3. Finally use the returned forecast URL to get the actual forecast
+
+When displaying responses:
+- Format weather data in a human-readable way
+- Highlight important information like temperature, precipitation, and alerts
+- Handle errors appropriately
+- Convert technical terms to user-friendly language
+
+Always explain the weather conditions clearly and provide context for the forecast.
 """
 
-@tool
-def weather_agent(location_query: str) -> str:
+@tool 
+def weather_agent(location: str) -> str:
     """
-    특정 지역의 날씨 정보를 제공하는 전문 에이전트
-    
+    Weather information agent using National Weather Service API
+
     Args:
-        location_query: 날씨를 알고 싶은 지역
-        
+        location: Location to get weather for
+
     Returns:
-        해당 지역의 날씨 정보
+        Formatted weather information
     """
     try:
+        model = get_configured_model()
         agent = Agent(
-            model=get_configured_model(),
+            model=model,
             system_prompt=WEATHER_AGENT_PROMPT,
-            tools=[get_position, http_request]
+            tools=[get_position, http_request]  # 가이드 문서와 동일
         )
-        
-        weather_prompt = f"""
-        "{location_query}" 지역의 날씨 정보를 제공해주세요.
-        
-        단계:
-        1. 먼저 지역의 정확한 좌표(위도, 경도)를 찾으세요
-        2. 좌표가 미국 지역인지 확인하세요 (위도: 24-49, 경도: -125 ~ -66)
-        3. 미국 지역이면 National Weather Service API를 사용하여 날씨 정보를 가져오세요
-           - https://api.weather.gov/points/위도,경도 호출
-           - 응답에서 forecast URL 추출
-           - forecast URL 호출하여 날씨 예보 가져오기
-        4. 미국 외 지역이면 "미국 지역만 지원합니다"라고 안내하세요
-        
-        사용자 친화적인 날씨 보고서를 제공해주세요.
-        """
-        
-        response = agent(weather_prompt)
+
+        response = agent(f"What's the weather like in {location}?")
         return str(response)
-        
+
     except Exception as e:
-        return f"날씨 정보 조회 중 오류가 발생했습니다: {str(e)}"
+        return f"Weather agent error: {str(e)}"
 
-
-# Conversation Agent - 일반 대화 전문
+# Conversation Agent - 일반 대화 처리
 CONVERSATION_AGENT_PROMPT = """
-당신은 친근하고 도움이 되는 대화 전문 에이전트입니다.
-검색이나 날씨가 아닌 일반적인 대화, 인사, 질문에 대해 자연스럽고 유용한 답변을 제공합니다.
-사용자와 친근한 대화를 나누며 필요시 조언이나 정보를 제공하세요.
+You are a friendly and helpful conversation specialist agent.
+
+Characteristics:
+- Communicate with a warm and friendly tone
+- Understand and empathize with users' emotions
+- Use appropriate emojis to enhance expressiveness
+- Provide concise yet meaningful responses
+
+Approach by conversation type:
+- Greetings: Warmly acknowledge greetings
+- Emotional expressions: Show empathy and respond appropriately
+- General questions: Provide helpful answers
+- Thank you messages: Accept graciously
+
+Guidelines:
+- For questions requiring search or weather information, guide users that other agents will handle them
+- Keep responses brief, 2-3 sentences maximum
+- Maintain natural and human-like conversation
 """
 
 @tool
 def conversation_agent(message: str) -> str:
     """
-    일반적인 대화와 질문에 응답하는 전문 에이전트
-    
+    General conversation handling agent
+
     Args:
-        message: 사용자의 메시지나 질문
-        
+        message: User message
+
     Returns:
-        요청에 응답의 양식이 있다면 요청응답에 따르며, 없다면 도움이 되는 답변.
-    """
-    try:
-        agent = Agent(
-            model=get_configured_model(),
-            system_prompt=CONVERSATION_AGENT_PROMPT,
-            tools=[]
-        )
-        
-        conversation_prompt = f"""
-        사용자가 다음과 같이 입력하였습니다: "{message}" 
-        """
-        
-        response = agent(conversation_prompt)
-        return str(response)
-        
-    except Exception as e:
-        return f"대화 처리 중 오류가 발생했습니다: {str(e)}"
+        Conversation response
+    """ 
+    model = get_configured_model()
+    agent = Agent(
+        model=model,
+        system_prompt=CONVERSATION_AGENT_PROMPT,
+        tools=[]
+    )
+    
+    response = agent(message)
+    return str(response)
+
+ 
+# 테스트 코드 (파일 하단에 추가)
+if __name__ == "__main__":
+    print("🧪 sub agent test..")
+    print("=" * 60)
+    
+    # Search Agent 테스트
+    print("\n🔍 Search Agent test:")
+    print("-" * 30)
+    search_result = search_agent("Artifical Intelligent")
+    print(search_result[:200] + "..." if len(search_result) > 200 else search_result)
+    
+    # Weather Agent 테스트  
+    print("\n🌤️ Weather Agent test:")
+    print("-" * 30)
+    weather_result = weather_agent("newyork")
+    print(weather_result[:200] + "..." if len(weather_result) > 200 else weather_result)
+    
+    # Conversation Agent 테스트
+    print("\n💬 Conversation Agent test:")
+    print("-" * 30)
+    conversation_result = conversation_agent("hello. good morning?!")
+    print(conversation_result)
+    
+    print("\n" + "=" * 60)
+    print("✅ complete!")
