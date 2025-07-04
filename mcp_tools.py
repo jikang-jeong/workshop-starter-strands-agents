@@ -50,25 +50,7 @@ def get_position(location: str) -> Dict[str, Any]:
     # Hint: Use OpenStreetMap Nominatim API
     # URL: https://nominatim.openstreetmap.org/search
     pass
-
-
-def get_weather(location: str) -> Dict[str, Any]:
-    """
-    Query weather information for the specified location.
-    
-    Args:
-        location: Location name
-        
-    Returns:
-        Dictionary containing weather information
-    """
-    # TODO: Implement in Lab 2
-    # Hint: 
-    # 1. Get location coordinates with get_position()
-    # 2. Query weather information with Open-Meteo API
-    # URL: https://api.open-meteo.com/v1/forecast
-    pass
-
+ 
 
 # Test code
 if __name__ == "__main__":
