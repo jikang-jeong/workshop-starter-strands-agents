@@ -27,13 +27,8 @@ class StrandsAgentsWorkshopApp:
         # 1. Model configuration
         # 2. Create orchestrator agent
         # 3. Display system information
-        pass
-
-    def _display_system_info(self):
-        """Display system information"""
-        # TODO: Implement in Lab 5
-        pass
-
+        pass 
+        
     def process_input(self, user_input: str) -> Dict[str, Any]:
         """
         Process user input through orchestrator agent
