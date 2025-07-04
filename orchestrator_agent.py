@@ -78,11 +78,7 @@ class OrchestratorAgent:
             Processing result
         """
         pass
-
-    def get_agent_status(self) -> Dict[str, Any]:
-        """Return agent status information"""
-        pass
-
+ 
 
 # Test code
 if __name__ == "__main__":
