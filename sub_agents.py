@@ -1,6 +1,6 @@
 """Sub Agents - Strands Agents Workshop"""
 from strands import Agent, tool
-from mcp_tools import wikipedia_search, duckduckgo_search, get_weather
+from mcp_tools import wikipedia_search, duckduckgo_search, get_weather_forecast
 from model_config import get_configured_model
 from typing import Dict, Any
 
