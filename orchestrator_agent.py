@@ -1,6 +1,6 @@
 """Orchestrator Agent - Strands Agents Workshop"""
 from strands import Agent
-from sub_agents import search_agent, weather_agent, conversation_agent
+from sub_agents import search_agent, weather_agent, conversation_agent, planning_agent
 from model_config import get_configured_model
 from typing import Dict, Any
 import re
