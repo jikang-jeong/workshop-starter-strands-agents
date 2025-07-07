@@ -29,39 +29,7 @@ class OrchestratorAgent:
     def _create_orchestrator_agent(self) -> Agent:
         pass
  
-
-    def _assess_clarity(self, user_input: str) -> str:
-        """
-        Assess the clarity of user request.
-
-        Args:
-            user_input: User input
-
-        Returns:
-            "NEED_MORE" or "PROCEED"
-        """
-        pass
-
-    def _create_execution_plan(self, user_input: str) -> str:
-        """
-        Create execution plan for user request.
-
-        Args:
-            user_input: User input
-
-        Returns:
-            Execution plan text
-        """
-        pass
-
-    def _handle_vague_request(self, user_input: str) -> Dict[str, Any]:
-        """Handle vague requests that need clarification"""
-        pass
-
-    def _execute_plan(self, user_input: str, plan_text: str) -> str:
-        """Execute the plan using sub-agents"""
-        pass
-
+ 
     def process_user_input(self, user_input: str) -> Dict[str, Any]:
         """
         Process user input and delegate to appropriate sub-agents
