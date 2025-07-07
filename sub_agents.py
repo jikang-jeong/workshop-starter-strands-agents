@@ -65,6 +65,17 @@ def conversation_agent(message: str) -> str:
     # 4. Error handling and default responses
     pass
 
+@tool
+def planning_agent(user_request: str) -> str:
+    """
+    Task Planning Specialist Agent
+    
+    Args:
+        user_request: query
+        
+    Returns:
+        Planning 
+    """
 
 # Test code
 if __name__ == "__main__":
