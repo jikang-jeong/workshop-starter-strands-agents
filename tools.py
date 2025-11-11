@@ -1,4 +1,4 @@
-"""MCP Tools - Strands Agents Workshop"""
+"""Tools - Strands Agents Workshop"""
 import httpx
 import wikipedia
 import asyncio
@@ -57,7 +57,7 @@ def get_position(location: str) -> Dict[str, Any]:
 
 # Test code
 if __name__ == "__main__":
-    print("🧪 MCP Tools Test")
+    print("🧪 Tools Test")
     print("=" * 50)
     
     # TODO: Write test code for each function in Lab 2
