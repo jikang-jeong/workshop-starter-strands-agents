@@ -1,7 +1,7 @@
 """Sub Agents - Strands Agents Workshop"""
 from strands import Agent, tool
 from strands_tools import http_request
-from mcp_tools import get_position, wikipedia_search, duckduckgo_search
+from tools import get_position, wikipedia_search, duckduckgo_search
 from model_config import get_configured_model
 from typing import Dict, Any
 
