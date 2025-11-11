@@ -1,4 +1,4 @@
-"""MCP Tools - Strands Agents Workshop"""
+"""Tools - Strands Agents Workshop"""
 import httpx
 import wikipedia
 import asyncio
@@ -168,7 +168,7 @@ def get_position(location: str) -> Dict[str, Any]:
 
 # 테스트 코드 (파일 하단에 추가)
 if __name__ == "__main__":
-    print("🧪 MCP Tool test..")
+    print("🧪 Tool test..")
     print("=" * 50)
     
     # 위치 검색 테스트
